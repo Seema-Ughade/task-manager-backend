@@ -5,6 +5,9 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const departmentRoutes = require('../routes/departmentRoutes');
 const clientRoutes = require('../routes/clientRoutes');
+const projectRoutes = require('../routes/projectRoutes');
+const roleRoutes = require('../routes/roleRoutes');
+const userRoutes = require('../routes/userRoutes');
 
 
 dotenv.config();
@@ -21,9 +24,15 @@ dbConnect();
 app.use(cors());
 
 app.use(express.json());
+
 app.use('/api/v1', router);
 app.use('/api', departmentRoutes);
 app.use('/api', clientRoutes);
+app.use('/api', projectRoutes);
+app.use('/api/roles', roleRoutes);
+
+app.use('/api/users', userRoutes);
+
 
 
 

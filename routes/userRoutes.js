@@ -1,55 +1,32 @@
 const express = require('express');
 const router = express.Router();
+const userController = require('../controllers/userController'); // Adjust path based on your folder structure
 const multer = require('multer');
-const userController = require('../controllers/userController');
-const authenticationController = require('../controllers/authenticationController');
-const auth = require('../middlewares/auth'); // Ensure auth middleware is imported correctly
 
-
+// Set up multer for file uploads
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/');
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname);
-    }
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // Make sure the 'uploads' directory exists
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname); // Unique filename
+  },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage }); // Initialize multer with the storage settings
 
-// Get All Users
-router.get('/users', userController.getAllUsers);
+// User CRUD routes
 
+// Get all users
+router.get('/', userController.getUsers);
 
-// Update All Users
-router.put('/users', auth, userController.updateAllUsers);
+// Create a new user
+router.post('/', upload.single('profileImage'), userController.createUser);
 
+// Update a user
+router.put('/:id', upload.single('profileImage'), userController.updateUser);
 
-// Delete All Users
-router.delete('/users', auth, userController.deleteAllUsers);
-
-
-//Public Routes
-
-router.post('/register', authenticationController.register)
-router.post('/login', authenticationController.login)
-
-
-//Protected Routes
-// create user
-router.post('/users', auth, upload.single('photo'), userController.createUser);
-
-// get user by ID
-router.get('/users/:id', auth, userController.getUser);
-
-// Update User by ID
-router.put('/users/:id', auth, userController.updateUser);
-
-// Delete User by ID
-router.delete('/users/:id', auth, userController.deleteUser);
-
-
-
-
+// Delete a user
+router.delete('/:id', userController.deleteUser);
 
 module.exports = router;
