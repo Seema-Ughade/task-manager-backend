@@ -1,19 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController'); // Adjust path based on your folder structure
-const multer = require('multer');
-
-// Set up multer for file uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Make sure the 'uploads' directory exists
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname); // Unique filename
-  },
-});
-
-const upload = multer({ storage }); // Initialize multer with the storage settings
+const singleUpload = require('../middlewares/multer'); // Adjust the path as needed
 
 // User CRUD routes
 
@@ -21,10 +9,10 @@ const upload = multer({ storage }); // Initialize multer with the storage settin
 router.get('/', userController.getUsers);
 
 // Create a new user
-router.post('/', upload.single('profileImage'), userController.createUser);
+router.post('/', singleUpload, userController.createUser); // Apply singleUpload middleware
 
 // Update a user
-router.put('/:id', upload.single('profileImage'), userController.updateUser);
+router.put('/:id', singleUpload, userController.updateUser); // Apply singleUpload middleware
 
 // Delete a user
 router.delete('/:id', userController.deleteUser);
