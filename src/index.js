@@ -8,6 +8,7 @@ const clientRoutes = require('../routes/clientRoutes');
 const projectRoutes = require('../routes/projectRoutes');
 const roleRoutes = require('../routes/roleRoutes');
 const userRoutes = require('../routes/userRoutes');
+const statusRoutes = require('../routes/statusRoutes');
 
 
 dotenv.config();
@@ -32,6 +33,7 @@ app.use('/api', projectRoutes);
 app.use('/api/roles', roleRoutes);
 
 app.use('/api/users', userRoutes);
+app.use('/api/statuses', statusRoutes);
 
 
 

@@ -73,10 +73,18 @@ const UserSchema = new mongoose.Schema({
   role: { type: mongoose.Schema.Types.ObjectId, ref: 'Role', required: true },
   project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true },
   salary: { type: Number, required: true },
-  status: { type: String, enum: ['active', 'inactive'], default: 'active' },
+  // status: { type: String, enum: ['active', 'inactive'], default: 'active' },
   profilePicture: { type: String }, // URL for profile picture
 
-  isActive: { type: Boolean, default: true },
+  status: {
+    type: String,
+    enum: ['active', 'inactive'], // or whatever values you define
+    default: 'active',
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', UserSchema);

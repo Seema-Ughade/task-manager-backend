@@ -76,7 +76,7 @@ exports.updateUser = async (req, res) => {
             project,
             role,
             salary,
-            status,
+            isActive,
             profilePicture,
         }, { new: true });
 
