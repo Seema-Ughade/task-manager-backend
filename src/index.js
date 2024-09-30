@@ -9,6 +9,7 @@ const projectRoutes = require('../routes/projectRoutes');
 const roleRoutes = require('../routes/roleRoutes');
 const userRoutes = require('../routes/userRoutes');
 const statusRoutes = require('../routes/statusRoutes');
+const taskRoutes = require('../routes/taskRoutes');
 
 
 dotenv.config();
@@ -34,10 +35,14 @@ app.use('/api/roles', roleRoutes);
 
 app.use('/api/users', userRoutes);
 app.use('/api/statuses', statusRoutes);
+// app.use('/api/tasks', taskRoutes);
 
+app.use('/api', taskRoutes);
 
 
 
 app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}`);
 });
+
+// give backend for this form give controller model route and index.js file code for this give updated code 
