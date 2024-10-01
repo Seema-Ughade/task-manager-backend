@@ -10,6 +10,10 @@ const roleRoutes = require('../routes/roleRoutes');
 const userRoutes = require('../routes/userRoutes');
 const statusRoutes = require('../routes/statusRoutes');
 const taskRoutes = require('../routes/taskRoutes');
+const AssigntaskRoutes = require('../routes/AssigntaskRoutes');
+const tagRoutes = require('../routes/tagRoutes');
+const activityTypeRoutes = require('../routes/activityTypeRoutes');
+const taxRoutes = require('../routes/taxRoutes');
 
 
 dotenv.config();
@@ -38,6 +42,11 @@ app.use('/api/statuses', statusRoutes);
 // app.use('/api/tasks', taskRoutes);
 
 app.use('/api', taskRoutes);
+app.use('/api', AssigntaskRoutes);
+
+app.use('/api/tags', tagRoutes);
+app.use('/api/activity-types', activityTypeRoutes);
+app.use('/api/taxes', taxRoutes);
 
 
 
