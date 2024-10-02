@@ -1,4 +1,4 @@
-// const User = require('../models/User'); // Ensure this path is correct
+const User = require('../models/User'); // Ensure this path is correct
 const bcrypt = require('bcrypt');
 const cloudinary = require('cloudinary').v2;
 
