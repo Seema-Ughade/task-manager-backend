@@ -83,15 +83,35 @@ exports.editTask = async (req, res) => {
 };
 
 // Delete a task
+// exports.deleteTask = async (req, res) => {
+//   const { id } = req.params; // Get ID from request parameters
+//   try {
+//     const deletedTask = await Task.findByIdAndDelete(id); // Delete task by ID
+//     if (!deletedTask) {
+//       return res.status(404).json({ message: 'Task not found' });
+//     }
+//     res.status(200).json({ message: 'Task deleted successfully' });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 exports.deleteTask = async (req, res) => {
   const { id } = req.params; // Get ID from request parameters
+
+  // Log the ID to check if it's correct
+  console.log("Deleting task with ID:", id);
+
   try {
     const deletedTask = await Task.findByIdAndDelete(id); // Delete task by ID
+
     if (!deletedTask) {
+      console.log("Task not found for ID:", id); // Log if task was not found
       return res.status(404).json({ message: 'Task not found' });
     }
+    
     res.status(200).json({ message: 'Task deleted successfully' });
   } catch (error) {
+    console.error("Error deleting task:", error.message); // Log server error
     res.status(500).json({ message: error.message });
   }
 };

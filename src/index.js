@@ -14,6 +14,7 @@ const AssigntaskRoutes = require('../routes/AssigntaskRoutes');
 const tagRoutes = require('../routes/tagRoutes');
 const activityTypeRoutes = require('../routes/activityTypeRoutes');
 const taxRoutes = require('../routes/taxRoutes');
+const eventRoutes = require('../routes/eventRoutes');
 
 
 dotenv.config();
@@ -48,6 +49,7 @@ app.use('/api/tags', tagRoutes);
 app.use('/api/activity-types', activityTypeRoutes);
 app.use('/api/taxes', taxRoutes);
 
+app.use('/api/events', eventRoutes);
 
 
 app.listen(port, hostname, () => {

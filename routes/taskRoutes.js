@@ -24,7 +24,7 @@ const router = express.Router();
 router.post('/tasks', upload.array('attachments'), addTask); // Use upload middleware for file attachments
 router.get('/tasks', getTasks); // Get all tasks
 router.get('/tasks/:id', getTaskById); // Get task by ID
-router.put('/:id', upload.array('attachments'), editTask); // Edit task by ID, handle file uploads
-router.delete('/:id', deleteTask); // Delete task by ID
+router.put('/tasks/:id', upload.array('attachments'), editTask); // Edit task by ID, handle file uploads
+router.delete('/tasks/:id', deleteTask); // Delete task by ID
 
 module.exports = router;
