@@ -15,7 +15,9 @@ const tagRoutes = require('../routes/tagRoutes');
 const activityTypeRoutes = require('../routes/activityTypeRoutes');
 const taxRoutes = require('../routes/taxRoutes');
 const eventRoutes = require('../routes/eventRoutes');
+const settingsRouter = require('../routes/settings');
 
+const authRoutes = require('../routes/authRoutes');
 
 dotenv.config();
 
@@ -41,6 +43,7 @@ app.use('/api/roles', roleRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/statuses', statusRoutes);
 // app.use('/api/tasks', taskRoutes);
+app.use('/api/auth', authRoutes);
 
 app.use('/api', taskRoutes);
 app.use('/api', AssigntaskRoutes);
@@ -50,6 +53,7 @@ app.use('/api/activity-types', activityTypeRoutes);
 app.use('/api/taxes', taxRoutes);
 
 app.use('/api/events', eventRoutes);
+app.use('/api/settings', settingsRouter); // Use the settings router
 
 
 app.listen(port, hostname, () => {

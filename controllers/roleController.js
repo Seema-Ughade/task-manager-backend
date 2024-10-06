@@ -10,6 +10,19 @@ exports.getAllRoles = async (req, res) => {
   }
 };
 
+exports.getRoleById = async (req, res) => {
+  try {
+    const role = await Role.findById(req.params.id); // Get role by ID from the database
+    if (!role) {
+      return res.status(404).json({ message: 'Role not found' }); // Return 404 if role doesn't exist
+    }
+    res.status(200).json(role); // Return the role data
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error }); // Return 500 for any server error
+  }
+};
+
+
 // Create a new role
 exports.createRole = async (req, res) => {
   const { name, permissions, description } = req.body;
