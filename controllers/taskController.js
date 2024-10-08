@@ -1,8 +1,8 @@
 const Task = require('../models/Task'); // Assuming Task is your mongoose model
 const User = require('../models/User'); // Assuming User is your mongoose model
 const twilio = require('twilio');
+require('dotenv').config(); // Ensure you load environment variables
 
-// Twilio credentials (replace with your actual credentials)
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 
