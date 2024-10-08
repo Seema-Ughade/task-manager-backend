@@ -9,7 +9,7 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = new twilio(accountSid, authToken);
 
 // Twilio WhatsApp sender number (replace with your Twilio WhatsApp number)
-const twilioWhatsAppNumber = 'whatsapp:+14155238886.'; // Your Twilio WhatsApp number
+const twilioWhatsAppNumber = process.env.TWILIO_ACCOUNT_TWILIOWHATSAPPNUMBER; // Your Twilio WhatsApp number
 
 // Add a new task and send WhatsApp notification using Twilio
 exports.addTask = async (req, res) => {
