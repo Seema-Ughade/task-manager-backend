@@ -5,6 +5,9 @@ const twilio = require('twilio');
 // Twilio credentials (replace with your actual credentials)
 const accountSid = 'ACaf1c65fb70dc878439cfe5b513142b1e'; // Your Twilio Account SID
 const authToken = '7cd4c193c3dc2defb67041ac9334a304'; // Your Twilio Auth Token
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+
 const client = new twilio(accountSid, authToken);
 
 // Twilio WhatsApp sender number (replace with your Twilio WhatsApp number)
