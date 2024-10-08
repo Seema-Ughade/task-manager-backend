@@ -1,15 +1,14 @@
 const Task = require('../models/Task'); // Assuming Task is your mongoose model
 const User = require('../models/User'); // Assuming User is your mongoose model
 const twilio = require('twilio');
-require('dotenv').config(); // Ensure you load environment variables
 
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-
+// Twilio credentials (replace with your actual credentials)
+const accountSid = 'ACaf1c65fb70dc878439cfe5b513142b1e'; // Your Twilio Account SID
+const authToken = '7cd4c193c3dc2defb67041ac9334a304'; // Your Twilio Auth Token
 const client = new twilio(accountSid, authToken);
 
 // Twilio WhatsApp sender number (replace with your Twilio WhatsApp number)
-const twilioWhatsAppNumber = process.env.TWILIO_ACCOUNT_TWILIOWHATSAPPNUMBER; // Your Twilio WhatsApp number
+const twilioWhatsAppNumber = 'whatsapp:+14155238886'; // Your Twilio WhatsApp number
 
 // Add a new task and send WhatsApp notification using Twilio
 exports.addTask = async (req, res) => {
