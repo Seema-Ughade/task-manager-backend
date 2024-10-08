@@ -1,19 +1,15 @@
-const Task = require('../models/Task'); // Assuming Task is your mongoose model
-const User = require('../models/User'); // Assuming User is your mongoose model
+const Task = require('../models/Task'); 
+const User = require('../models/User'); 
 const twilio = require('twilio');
-require('dotenv').config(); // Ensure you load environment variables
+require('dotenv').config();
 
-// Initialize Twilio client with environment variables
 const client = new twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+const twilioWhatsAppNumber = process.env.TWILIO_WHATSAPP_NUMBER;
 
-// Twilio WhatsApp sender number (replace with your Twilio WhatsApp number)
-const twilioWhatsAppNumber = process.env.TWILIO_ACCOUNT_TWILIOWHATSAPPNUMBER; // Your Twilio WhatsApp number
-
-// Add a new task and send WhatsApp notification using Twilio
 exports.addTask = async (req, res) => {
   try {
     const { title, projectId, priority, assignedTo, dueDate, estimateTime, tags, description } = req.body;
-    const attachments = req.files ? req.files.map(file => file.path) : []; // Handle file uploads
+    const attachments = req.files ? req.files.map(file => file.path) : [];
 
     const newTask = new Task({
       title,
@@ -22,39 +18,31 @@ exports.addTask = async (req, res) => {
       assignedTo,
       dueDate,
       estimateTime,
-      tags: tags.split(',').map(tag => tag.trim()), // Split and trim tags
+      tags: tags.split(',').map(tag => tag.trim()),
       attachments,
       description,
     });
 
-    // Save the new task to the database
     const savedTask = await newTask.save();
+    const user = await User.findById(assignedTo);
 
-    // Fetch the user to whom the task is assigned
-    const user = await User.findById(assignedTo); 
-
-    if (user) { // Ensure the user exists
-      // Prepare the WhatsApp message
+    if (user) {
       const message = `Hi ${user.name}, you have been assigned a new task: ${title}.\nPriority: ${priority}\nDue Date: ${dueDate}\nDescription: ${description}`;
 
-      // Send the message using Twilio's WhatsApp API
-      client.messages
-        .create({
-          from: twilioWhatsAppNumber, // Twilio WhatsApp sender number
-          to: `whatsapp:${user.phone}`, // Recipient's phone number in WhatsApp format
-          body: message, // The message content
-        })
-        .then((response) => {
-          // Log the API response
-          console.log('WhatsApp message sent successfully:', response.sid); // Log success message
-          res.status(201).json({ message: 'Task created and WhatsApp notification sent via Twilio', task: savedTask });
-        })
-        .catch((error) => {
-          console.error('Failed to send message via Twilio:', error.message); // Log the failure response
-          res.status(500).json({ message: 'Task created, but failed to send WhatsApp message via Twilio', error: error.message });
+      try {
+        const messageResponse = await client.messages.create({
+          from: twilioWhatsAppNumber,
+          to: `whatsapp:${user.phone}`,
+          body: message,
         });
+        console.log('WhatsApp message sent successfully:', messageResponse.sid);
+        res.status(201).json({ message: 'Task created and WhatsApp notification sent via Twilio', task: savedTask });
+      } catch (error) {
+        console.error('Failed to send message via Twilio:', error.message);
+        res.status(500).json({ message: 'Task created, but failed to send WhatsApp message via Twilio', error: error.message });
+      }
     } else {
-      console.error('User not found for assignedTo ID:', assignedTo); // Log user not found
+      console.error('User not found for assignedTo ID:', assignedTo);
       res.status(404).json({ message: 'User not found' });
     }
   } catch (error) {
@@ -62,11 +50,6 @@ exports.addTask = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-// Other functions remain unchanged (getTasks, getTaskById, editTask, deleteTask)
-
-
-// Other functions remain unchanged
 
 // Get all tasks
 exports.getTasks = async (req, res) => {
