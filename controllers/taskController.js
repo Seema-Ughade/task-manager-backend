@@ -3,10 +3,8 @@ const User = require('../models/User'); // Assuming User is your mongoose model
 const twilio = require('twilio');
 require('dotenv').config(); // Ensure you load environment variables
 
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-
-const client = new twilio(accountSid, authToken);
+// Initialize Twilio client with environment variables
+const client = new twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
 // Twilio WhatsApp sender number (replace with your Twilio WhatsApp number)
 const twilioWhatsAppNumber = process.env.TWILIO_ACCOUNT_TWILIOWHATSAPPNUMBER; // Your Twilio WhatsApp number
@@ -64,6 +62,9 @@ exports.addTask = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Other functions remain unchanged (getTasks, getTaskById, editTask, deleteTask)
+
 
 // Other functions remain unchanged
 
