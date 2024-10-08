@@ -1,31 +1,4 @@
-
-// const mongoose = require('mongoose');
-
-// const UserSchema = new mongoose.Schema({
-//   name: { type: String, required: true },
-//   email: { type: String, required: true, unique: true },
-//   phone: { type: String, required: true },
-//   password: { type: String, required: true },
-//   role: { type: mongoose.Schema.Types.ObjectId, ref: 'Role', required: true },
-//   project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true },
-//   salary: { type: Number, required: true },
-//   // status: { type: String, enum: ['active', 'inactive'], default: 'active' },
-//   profilePicture: { type: String }, // URL for profile picture
-
-//   status: {
-//     type: String,
-//     enum: ['active', 'inactive'], // or whatever values you define
-//     default: 'active',
-//   },
-//   isActive: {
-//     type: Boolean,
-//     default: true,
-//   },
-// }, { timestamps: true });
-
-// module.exports = mongoose.model('User', UserSchema);
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -80,24 +53,7 @@ const userSchema = new mongoose.Schema({
     timestamps: true // Automatically manage createdAt and updatedAt fields
 });
 
-// Create the User model
-userSchema.methods.isPasswordValid = async function (inputPassword) {
-    // Compare the input password with the hashed password stored in the database
-    return await bcrypt.compare(inputPassword, this.password);
-  };
-  
-  // Pre-save hook to hash the password before saving the user
-  userSchema.pre('save', async function (next) {
-    if (!this.isModified('password')) return next();
-    
-    // Hash the password
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  });
-  
-  // Create the User model
-  const User = mongoose.model('User', userSchema);
-  
-  module.exports = User;
-  
+// Create the User model without password hashing
+const User = mongoose.model('User', userSchema);
+
+module.exports = User;

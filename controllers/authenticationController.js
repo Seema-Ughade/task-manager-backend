@@ -9,13 +9,13 @@ const login = async (req, res) => {
     // Check if the user exists
     const user = await User.findOne({ email }).populate('role');
     if (!user) {
-      return res.status(400).json({ message: 'Invalid email or password.' });
+      return res.status(400).json({ message: 'Invalid email.' });
     }
 
     // Validate password using the isPasswordValid method
     const isPasswordValid = await user.isPasswordValid(password);
     if (!isPasswordValid) {
-      return res.status(400).json({ message: 'Invalid email or password.' });
+      return res.status(400).json({ message: 'Invalid password.' });
     }
 
     // Generate JWT token
