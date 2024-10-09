@@ -1,16 +1,17 @@
-
 require('dotenv').config(); // Load environment variables from .env file
+
 const Task = require('../models/Task'); // Assuming Task is your mongoose model
 const User = require('../models/User'); // Assuming User is your mongoose model
 const twilio = require('twilio');
 
-// Twilio credentials from .env file
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
+// Twilio credentials (replace with your actual credentials)
+const accountSid = process.env.TWILIO_ACCOUNT_SID; // Your Twilio Account SID from .env
+const authToken = process.env.TWILIO_AUTH_TOKEN;   // Your Twilio Auth Token from .env
+const twilioWhatsAppNumber = process.env.TWILIO_WHATSAPP_NUMBER; // Your Twilio WhatsApp number from .env
+
+// Create Twilio client instance
 const client = new twilio(accountSid, authToken);
 
-// Twilio WhatsApp sender number from .env file
-const twilioWhatsAppNumber = process.env.TWILIO_WHATSAPP_NUMBER;
 
 // Add a new task and send WhatsApp notification using Twilio
 exports.addTask = async (req, res) => {
@@ -34,7 +35,7 @@ exports.addTask = async (req, res) => {
     const savedTask = await newTask.save();
 
     // Fetch the user to whom the task is assigned
-    const user = await User.findById(assignedTo);
+    const user = await User.findById(assignedTo); 
 
     if (user) { // Ensure the user exists
       // Prepare the WhatsApp message
@@ -48,24 +49,19 @@ exports.addTask = async (req, res) => {
           body: message, // The message content
         })
         .then((response) => {
-          console.log('WhatsApp message sent successfully:', response.sid); // Log success message
+          // Log the API response
           res.status(201).json({ message: 'Task created and WhatsApp notification sent via Twilio', task: savedTask });
         })
         .catch((error) => {
-          console.error('Failed to send message via Twilio:', error.message); // Log failure response
           res.status(500).json({ message: 'Task created, but failed to send WhatsApp message via Twilio', error: error.message });
         });
     } else {
-      console.error('User not found for assignedTo ID:', assignedTo); // Log user not found
       res.status(404).json({ message: 'User not found' });
     }
   } catch (error) {
-    console.error('Error while sending WhatsApp message:', error.message);
     res.status(500).json({ message: error.message });
   }
 };
-
-// Other functions remain unchanged
 
 // Other functions remain unchanged
 
