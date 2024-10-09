@@ -2,18 +2,8 @@ require('dotenv').config(); // Load environment variables from .env file
 
 const Task = require('../models/Task'); // Assuming Task is your mongoose model
 const User = require('../models/User'); // Assuming User is your mongoose model
-const twilio = require('twilio');
 
-// Twilio credentials (replace with your actual credentials)
-const accountSid = process.env.TWILIO_ACCOUNT_SID; // Your Twilio Account SID from .env
-const authToken = process.env.TWILIO_AUTH_TOKEN;   // Your Twilio Auth Token from .env
-const twilioWhatsAppNumber = process.env.TWILIO_WHATSAPP_NUMBER; // Your Twilio WhatsApp number from .env
-
-// Create Twilio client instance
-const client = new twilio(accountSid, authToken);
-
-
-// Add a new task and send WhatsApp notification using Twilio
+// Add a new task (without Twilio functionality)
 exports.addTask = async (req, res) => {
   try {
     const { title, projectId, priority, assignedTo, dueDate, estimateTime, tags, description } = req.body;
@@ -38,23 +28,7 @@ exports.addTask = async (req, res) => {
     const user = await User.findById(assignedTo); 
 
     if (user) { // Ensure the user exists
-      // Prepare the WhatsApp message
-      const message = `Hi ${user.name}, you have been assigned a new task: ${title}.\nPriority: ${priority}\nDue Date: ${dueDate}\nDescription: ${description}`;
-
-      // Send the message using Twilio's WhatsApp API
-      client.messages
-        .create({
-          from: twilioWhatsAppNumber, // Twilio WhatsApp sender number
-          to: `whatsapp:${user.phone}`, // Recipient's phone number in WhatsApp format
-          body: message, // The message content
-        })
-        .then((response) => {
-          // Log the API response
-          res.status(201).json({ message: 'Task created and WhatsApp notification sent via Twilio', task: savedTask });
-        })
-        .catch((error) => {
-          res.status(500).json({ message: 'Task created, but failed to send WhatsApp message via Twilio', error: error.message });
-        });
+      res.status(201).json({ message: 'Task created successfully', task: savedTask });
     } else {
       res.status(404).json({ message: 'User not found' });
     }
@@ -62,8 +36,6 @@ exports.addTask = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-// Other functions remain unchanged
 
 // Get all tasks
 exports.getTasks = async (req, res) => {
